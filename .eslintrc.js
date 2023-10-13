@@ -25,6 +25,15 @@ module.exports = {
     "prettier",
   ],
   rules: {
+    "react/self-closing-comp": [
+      "error",
+      {
+        component: true,
+        html: true,
+        jsx: true,
+        tsx: true,
+      },
+    ],
     camelcase: "off",
     "import/no-unresolved": "error",
     "@typescript-eslint/naming-convention": [
