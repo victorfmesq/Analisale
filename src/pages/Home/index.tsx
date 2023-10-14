@@ -1,11 +1,14 @@
 import { Outlet } from "react-router-dom";
+import Menu from "../../components/Menu";
+import TabPage from "../../components/Pages/TabPage";
 
 const Home = () => {
   return (
-    <div>
-      Home
-      <Outlet />
-    </div>
+    <Menu>
+      <TabPage>
+        <Outlet />
+      </TabPage>
+    </Menu>
   );
 };
 

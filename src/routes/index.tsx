@@ -5,8 +5,10 @@ import Login from "../pages/Login";
 import Products from "../pages/Products";
 import Charges from "../pages/Charges";
 import Sales from "../pages/Sales";
+import Dashboard from "../pages/Dashboards";
 
-const ROUTES = {
+export const ROUTES = {
+  dashboards: "dashboards",
   products: "products",
   charges: "charges",
   sales: "sales",
@@ -33,6 +35,10 @@ const RouteComponent = () => {
         {
           path: ROUTES.sales,
           element: <Sales />,
+        },
+        {
+          path: ROUTES.dashboards,
+          element: <Dashboard />,
         },
       ],
     },
