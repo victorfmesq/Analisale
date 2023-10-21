@@ -14,9 +14,10 @@ type Field = {
 interface FormProps {
   fields: Field[];
   onSubmit: () => void;
+  buttonLabel?: string;
 }
 
-const Form: FC<FormProps> = ({ fields, onSubmit }) => {
+const Form: FC<FormProps> = ({ fields, onSubmit, buttonLabel }) => {
   const [formData, setFormData] = useState<Record<string, Value>>({});
 
   const handleInputChange = (
@@ -87,9 +88,13 @@ const Form: FC<FormProps> = ({ fields, onSubmit }) => {
     <S.FormWrapper>
       {fields.map((field, index) => renderField(field, index))}
 
-      <button onClick={onSubmit}>Submit</button>
+      <S.Button onClick={onSubmit}>{buttonLabel}</S.Button>
     </S.FormWrapper>
   );
+};
+
+Form.defaultProps = {
+  buttonLabel: "submit",
 };
 
 export default Form;

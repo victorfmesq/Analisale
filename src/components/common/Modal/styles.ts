@@ -8,6 +8,7 @@ export const ModalWrapper = styled.div<{
   background: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
+  min-width: 350px;
 `;
 
 export const ModalContent = styled.div`
