@@ -5,7 +5,7 @@ import { Plus, Boxes } from "@styled-icons/bootstrap";
 import { useNavigate } from "react-router-dom";
 
 import ProfilePicture from "../ProfilePictue";
-import IconButton from "../Button";
+import IconButton from "../common/Button";
 import * as S from "./styles";
 import { ROUTES } from "../../routes";
 

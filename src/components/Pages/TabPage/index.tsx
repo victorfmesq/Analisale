@@ -1,6 +1,6 @@
 import { FC } from "react";
 import * as S from "./styles";
-import IconButton from "../../Button";
+import IconButton from "../../common/Button";
 
 interface TabPagesProps {
   children: React.ReactNode;

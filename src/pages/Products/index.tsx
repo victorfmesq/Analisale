@@ -1,6 +1,6 @@
 import { Plus } from "@styled-icons/bootstrap";
 
-import IconButton from "../../components/Button";
+import IconButton from "../../components/common/Button";
 import * as TabPageStyle from "../../components/Pages/TabPage/styles";
 import Table from "../../components/Table";
 

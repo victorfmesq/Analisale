@@ -1,13 +1,13 @@
 import { Plus } from "@styled-icons/bootstrap";
 
-import IconButton from "../../components/Button";
+import IconButton from "../../components/common/Button";
 import * as TabPageStyle from "../../components/Pages/TabPage/styles";
 import Table from "../../components/Table";
-import { useState } from "react";
 import useModal from "../../context/ModalContext/useModal";
-import Form from "../../components/Form";
+import Form from "../../components/common/Form";
+import FormModal from "../../components/FormModal";
 
-const MOCK_FORM_FIELDS: Field[] = [
+const MOCK_FORM_FIELDS = [
   {
     title: "Name",
     type: "text",
@@ -32,17 +32,17 @@ const MOCK_FORM_FIELDS: Field[] = [
 ];
 
 const Charges = () => {
-  const [isOpenModal, setisOpenModal] = useState<boolean>(false);
-
   const { handleModalContent } = useModal();
 
   const openModal = () => {
     handleModalContent(
       true,
-      <Form
-        fields={MOCK_FORM_FIELDS}
-        onSubmit={() => console.log("Submeter Formulário")}
-      />,
+      <FormModal title="Criar Encargo">
+        <Form
+          fields={MOCK_FORM_FIELDS}
+          onSubmit={() => console.log("Submeter Formulário")}
+        />
+      </FormModal>,
     );
   };
 

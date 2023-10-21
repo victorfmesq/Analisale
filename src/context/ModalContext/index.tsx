@@ -1,6 +1,6 @@
 import React, { FC, createContext, useMemo, useState } from "react";
 import { ModalProviderProps } from "./types";
-import Modal from "../../components/Modal";
+import Modal from "../../components/common/Modal";
 
 export const ModalContext = createContext({});
 

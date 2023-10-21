@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import * as S from "./styles";
-import useModal from "../../context/ModalContext/useModal";
+import useModal from "../../../context/ModalContext/useModal";
 
 interface ModalProps {
   isOpen: boolean;
