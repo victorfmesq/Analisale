@@ -28,11 +28,14 @@ const RouteComponent = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Navigate to={`${isAuthenticated ? "/home" : "/login"}`} />,
+      element: (
+        <Navigate to={`${isAuthenticated ? ROUTES.home : ROUTES.login}`} />
+      ),
     },
     {
-      path: `${isAuthenticated ? "/home" : "/login"}`,
+      path: `${isAuthenticated ? ROUTES.home : ROUTES.login}`,
       element: isAuthenticated ? <Home /> : <Login />,
+      errorElement: <ErrorPage />,
       children: [
         {
           path: ROUTES.products,

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { isMobile } from "react-device-detect";
 
 const BaseDiv = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ export const Container = styled(BaseDiv)`
 
 export const Header = styled(BaseDiv)`
   align-items: center;
+  justify-content: ${() => (isMobile ? "end" : "start")};
   height: 10%;
   padding: 0px 10px;
 `;
