@@ -9,6 +9,7 @@ interface FormModalProps {
 
 const FormModal: FC<FormModalProps> = ({ children, title }) => {
   const { handleModalContent } = useModal();
+
   return (
     <>
       <S.Header>

@@ -1,30 +1,25 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useState, useCallback } from "react";
 import * as S from "./styles";
+import {
+  FormComponentProps,
+  FormData,
+  FormField,
+  FormFieldType,
+  FormFieldValueType,
+} from "./types";
 
-type Type = "text" | "select" | "number" | "date";
-type Value = string | number | Date;
+// TODO: usar Id como key do
 
-type Field = {
-  title: string;
-  type: Type;
-  value: Value;
-  options?: string[];
-};
+// TODO: passar rules nos fields para validar os inputs
 
-interface FormProps {
-  fields: Field[];
-  onSubmit: () => void;
-  buttonLabel?: string;
-}
-
-const Form: FC<FormProps> = ({ fields, onSubmit, buttonLabel }) => {
-  const [formData, setFormData] = useState<Record<string, Value>>({});
+const Form: FC<FormComponentProps> = ({ fields, onSubmit, buttonLabel }) => {
+  const [formData, setFormData] = useState<FormData>({});
 
   const handleInputChange = (
     fieldName: string,
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>,
   ) => {
-    let fieldValue: Value = event.target.value;
+    let fieldValue: FormFieldValueType = event.target.value;
 
     const currentField = fields.find((field) => field.title === fieldName);
 
@@ -38,57 +33,59 @@ const Form: FC<FormProps> = ({ fields, onSubmit, buttonLabel }) => {
             : new Date(fieldValue);
     }
 
-    setFormData({
-      ...formData,
-      [fieldName]: fieldValue,
+    setFormData((current) => {
+      return { ...current, [fieldName]: fieldValue };
     });
   };
 
-  const renderField = (field: Field, index: number) => {
-    const { title, type, value, options } = field;
+  const renderField = useCallback(
+    (field: FormField, index: number) => {
+      const { title, type, value, options } = field;
 
-    const fieldValue = formData[title] || value;
+      const fieldValue = formData[title] || value;
 
-    const getFieldValue = (type: Type) => {
-      return type === "date"
-        ? (formData[title] as Date)?.toISOString().split("T")[0]
-        : type === "number"
-        ? (fieldValue as number)
-        : (fieldValue as string);
-    };
+      const getFieldValue = (type: FormFieldType) => {
+        return type === "date"
+          ? (formData[title] as Date)?.toISOString().split("T")[0]
+          : type === "number"
+          ? (fieldValue as number)
+          : (fieldValue as string);
+      };
 
-    return (
-      <S.FormField key={index}>
-        <S.FormLabel>{title}</S.FormLabel>
+      return (
+        <S.FormField key={index}>
+          <S.FormLabel>{title}</S.FormLabel>
 
-        {type === "select" ? (
-          <S.FormSelect
-            value={getFieldValue(type)}
-            onChange={(e) => handleInputChange(title, e)}
-          >
-            {options &&
-              options.map((option, optionIndex) => (
-                <option key={optionIndex} value={option}>
-                  {option}
-                </option>
-              ))}
-          </S.FormSelect>
-        ) : (
-          <S.FormInput
-            type={type}
-            value={getFieldValue(type)}
-            onChange={(e) => handleInputChange(title, e)}
-          />
-        )}
-      </S.FormField>
-    );
-  };
+          {type === "select" ? (
+            <S.FormSelect
+              value={getFieldValue(type)}
+              onChange={(e) => handleInputChange(title, e)}
+            >
+              {options &&
+                options.map((option, optionIndex) => (
+                  <option key={optionIndex} value={option}>
+                    {option}
+                  </option>
+                ))}
+            </S.FormSelect>
+          ) : (
+            <S.FormInput
+              type={type}
+              value={getFieldValue(type)}
+              onChange={(e) => handleInputChange(title, e)}
+            />
+          )}
+        </S.FormField>
+      );
+    },
+    [formData],
+  );
 
   return (
     <S.FormWrapper>
       {fields.map((field, index) => renderField(field, index))}
 
-      <S.Button onClick={onSubmit}>{buttonLabel}</S.Button>
+      <S.Button onClick={() => onSubmit(formData)}>{buttonLabel}</S.Button>
     </S.FormWrapper>
   );
 };

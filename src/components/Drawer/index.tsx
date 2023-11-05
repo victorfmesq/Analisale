@@ -36,56 +36,55 @@ const Drawer: FC<DrawerProps> = ({
       isOpen={isOpen}
       position={position}
     >
-      {!isMobile ||
-        (isOpen && (
-          <>
-            <S.Header>
-              <ProfilePicture alt="teste" src={IMG} isSmall={!isOpen} />
+      {(!isMobile || isOpen) && (
+        <>
+          <S.Header>
+            <ProfilePicture alt="teste" src={IMG} isSmall={!isOpen} />
 
-              <IconButton
-                onClick={() => navigate(ROUTES.sales)}
-                text="Criar Venda"
-                leftIcon={<Plus size={20} />}
-                isCompressed={!isOpen}
-              />
-            </S.Header>
+            <IconButton
+              onClick={() => navigate(ROUTES.sales)}
+              text="Criar Venda"
+              leftIcon={<Plus size={20} />}
+              isCompressed={!isOpen}
+            />
+          </S.Header>
 
-            <S.Body>
-              <IconButton
-                onClick={() => navigate(ROUTES.products)}
-                text="Produtos"
-                leftIcon={<Boxes size={30} />}
-                isCompressed={!isOpen}
-                isFulfilled
-              />
+          <S.Body>
+            <IconButton
+              onClick={() => navigate(ROUTES.products)}
+              text="Produtos"
+              leftIcon={<Boxes size={30} />}
+              isCompressed={!isOpen}
+              isFulfilled
+            />
 
-              <IconButton
-                onClick={() => navigate(ROUTES.charges)}
-                text="Encargos"
-                leftIcon={<MonetizationOn size={30} />}
-                isCompressed={!isOpen}
-                isFulfilled
-              />
+            <IconButton
+              onClick={() => navigate(ROUTES.charges)}
+              text="Encargos"
+              leftIcon={<MonetizationOn size={30} />}
+              isCompressed={!isOpen}
+              isFulfilled
+            />
 
-              <IconButton
-                onClick={() => navigate(ROUTES.dashboards)}
-                text="DashBoards"
-                leftIcon={<BarChart size={30} />}
-                isCompressed={!isOpen}
-                isFulfilled
-              />
-            </S.Body>
+            <IconButton
+              onClick={() => navigate(ROUTES.dashboards)}
+              text="DashBoards"
+              leftIcon={<BarChart size={30} />}
+              isCompressed={!isOpen}
+              isFulfilled
+            />
+          </S.Body>
 
-            <S.Footer>
-              <IconButton
-                onClick={() => console.log("click")}
-                text="Logout"
-                leftIcon={<Logout size={20} />}
-                isCompressed={!isOpen}
-              />
-            </S.Footer>
-          </>
-        ))}
+          <S.Footer>
+            <IconButton
+              onClick={() => console.log("click")}
+              text="Logout"
+              leftIcon={<Logout size={20} />}
+              isCompressed={!isOpen}
+            />
+          </S.Footer>
+        </>
+      )}
     </S.DrawerContainer>
   );
 };

@@ -14,6 +14,7 @@ export const Content = styled.div<{ paddingLeft: number }>`
 
 export const HeaderMobileContainer = styled.div`
   position: fixed;
+  rotate: 180deg;
   top: 0;
   left: 0;
   opacity: 0.8;
@@ -24,5 +25,4 @@ export const HeaderMobileContainer = styled.div`
   justify-content: center;
   margin: 10px;
   z-index: 1000;
-  border-radius: 50%;
 `;

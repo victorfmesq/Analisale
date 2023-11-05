@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -19,17 +20,17 @@ export const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
   height: 400px;
-  width: 500px;
+  width: ${() => (isMobile ? "80%" : "500px")};
   z-index: 900;
   background-color: lightgray;
   border-radius: 5px;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 
   > label {
-    font-size: 24px; /* Tamanho da fonte */
-    font-weight: bold; /* Texto em negrito */
-    text-align: center; /* Alinhamento centralizado */
-    color: #333; /* Cor do texto (pode ser personalizada) */
-    margin-bottom: 20px; /* Espaçamento inferior opcional */
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
   }
 `;

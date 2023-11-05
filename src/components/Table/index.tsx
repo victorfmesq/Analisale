@@ -1,20 +1,27 @@
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 
 import * as S from "./styles";
-import { FC } from "react";
+import React, { FC, useState } from "react";
 import { chargeRows, productRows, saleRows } from "./mocks";
-import { TableColumnTypes, VariantTable } from "./types";
+import {
+  DataTable,
+  ProductFields,
+  TableColumnTypes,
+  VariantTable,
+} from "./types";
 
 const productColumns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "Código", width: 90 },
   {
     field: "name",
     headerName: "Nome",
+    description: "Nome dos produtos",
     width: 150,
   },
   {
     field: "type",
     headerName: "Tipo",
+    type: "number",
     width: 90,
   },
   {
@@ -22,26 +29,25 @@ const productColumns: GridColDef[] = [
     headerName: "Preço de Venda",
     type: "number",
     sortable: true,
-    width: 90,
+    width: 150,
   },
   {
     field: "purchasePrice",
     headerName: "Preço de Compra",
     type: "number",
-    width: 90,
+    width: 150,
     sortable: true,
   },
   {
     field: "amount",
     headerName: "Quantidade Disponível",
-    description: "This column has a value getter and is not sortable.", // tooltip quando hover no header
+    type: "number",
     sortable: true,
-    width: 90,
+    width: 150,
   },
   {
     field: "description",
     headerName: "Descrição",
-    description: "This column has a value getter and is not sortable.", // tooltip quando hover no header
     width: 300,
   },
 ];
@@ -147,15 +153,35 @@ const getVariantRows = (variant: VariantTable) => {
   return variant === "products" ? productRows : saleRows;
 };
 
+// TODO: receber description do servidor
+const getTableRows = (variant: VariantTable, data: DataTable) => {
+  if (variant === "products")
+    return (data as Product.Entity[]).map((product) => {
+      return {
+        amount: product.amount,
+        description: "descrição (MOCK)",
+        name: product.name,
+        id: product.id,
+        purchasePrice: product.salePurchase,
+        salePrice: product.price,
+        type: product.type,
+      };
+    }) as unknown as ProductFields[];
+
+  return variant === "charges" ? chargeRows : saleRows;
+};
+
 interface TableProps {
   variant: VariantTable;
+  data: DataTable;
+  isLoading: boolean;
 }
 
-const Table: FC<TableProps> = ({ variant }) => {
+const Table: FC<TableProps> = ({ variant, data, isLoading }) => {
   return (
     <S.Container>
       <DataGrid
-        rows={getVariantRows(variant)}
+        rows={getTableRows(variant, data)}
         columns={getVariantColumns(variant)}
         initialState={{
           pagination: {
@@ -167,6 +193,7 @@ const Table: FC<TableProps> = ({ variant }) => {
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        loading={isLoading}
       />
     </S.Container>
   );

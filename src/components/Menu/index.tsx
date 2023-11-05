@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useState } from "react";
 import Drawer from "../Drawer";
 import { isMobile } from "react-device-detect";
-import { MenuApp, MenuButton, MenuUp } from "@styled-icons/bootstrap";
+import { Menu as MenuIcon, MenuOpen } from "@styled-icons/material";
 
 import * as S from "./styles";
 import IconButton from "../common/Button";
@@ -25,14 +25,18 @@ const Menu: FC<MenuProps> = ({ children }) => {
 
   return (
     <S.Container>
-      <S.HeaderMobileContainer>
-        <IconButton
-          isCompressed
-          text=""
-          rightIcon={<MenuUp size={20} />}
-          onClick={() => setIsOpenDrawer((current) => !current)}
-        ></IconButton>
-      </S.HeaderMobileContainer>
+      {isMobile && (
+        <S.HeaderMobileContainer>
+          <IconButton
+            isCompressed
+            text=""
+            rightIcon={
+              isOpenDrawer ? <MenuOpen size={20} /> : <MenuIcon size={20} />
+            }
+            onClick={() => setIsOpenDrawer((current) => !current)}
+          />
+        </S.HeaderMobileContainer>
+      )}
 
       <div
         onMouseEnter={() => setIsOpenDrawer(true)}
