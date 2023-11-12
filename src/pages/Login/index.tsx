@@ -8,13 +8,13 @@ import useSession from "../../context/SessionContext/useSession";
 
 const USER_FIELD: FormField = {
   title: "usuário",
-  type: "text",
+  type: "email",
   value: "",
 };
 
 const PASSWORD_FIELD: FormField = {
   title: "senha",
-  type: "text",
+  type: "password",
   value: "",
 };
 
@@ -29,7 +29,7 @@ const Login = () => {
       console.log(formData);
       // TODO: implementar verificação de autenticação
       if (
-        formData[USER_FIELD.title] === "joao" &&
+        formData[USER_FIELD.title] === "victor@victor.com" &&
         formData[PASSWORD_FIELD.title] === "victor"
       ) {
         navigate("/home");

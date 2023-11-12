@@ -1,4 +1,4 @@
-declare namespace Product {
+declare namespace Sale {
   export interface Entity extends BaseEntity.default {
     amount: number;
     name: string;
@@ -10,6 +10,10 @@ declare namespace Product {
   }
 
   export interface Payload {
+    productName: string;
+    quantity: 1;
+    totalPrice: 20;
+    productId: [1, 2];
     amount: number;
     name: string;
     price: number;

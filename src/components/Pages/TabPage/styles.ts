@@ -23,6 +23,7 @@ export const Header = styled(BaseDiv)`
   justify-content: ${() => (isMobile ? "end" : "start")};
   height: 10%;
   padding: 0px 10px;
+  gap: 20px;
 `;
 
 export const Body = styled(BaseDiv)`

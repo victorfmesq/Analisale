@@ -1,7 +1,13 @@
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridCellParams,
+  GridColDef,
+  GridRowParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 
 import * as S from "./styles";
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { chargeRows, productRows, saleRows } from "./mocks";
 import {
   DataTable,
@@ -9,6 +15,8 @@ import {
   TableColumnTypes,
   VariantTable,
 } from "./types";
+import isNullOrUndefinedOrEmpty from "../../utils/isNullOrUndefinedOrEmpty";
+import ActionButtons from "./ActionButtons";
 
 const productColumns: GridColDef[] = [
   { field: "id", headerName: "Código", width: 90 },
@@ -156,7 +164,7 @@ const getVariantRows = (variant: VariantTable) => {
 // TODO: receber description do servidor
 const getTableRows = (variant: VariantTable, data: DataTable) => {
   if (variant === "products")
-    return (data as Product.Entity[]).map((product) => {
+    return (data as Sale.Entity[]).map((product) => {
       return {
         amount: product.amount,
         description: "descrição (MOCK)",
@@ -175,26 +183,54 @@ interface TableProps {
   variant: VariantTable;
   data: DataTable;
   isLoading: boolean;
+  onEditCell: (row: GridRowParams) => void;
+  onDeleteCell: (row: GridRowParams) => void;
 }
 
-const Table: FC<TableProps> = ({ variant, data, isLoading }) => {
+const Table: FC<TableProps> = ({
+  variant,
+  data,
+  isLoading,
+  onDeleteCell,
+  onEditCell,
+}) => {
+  const tableRows = getTableRows(variant, data);
+  const variantColumns = getVariantColumns(variant);
+
   return (
     <S.Container>
-      <DataGrid
-        rows={getTableRows(variant, data)}
-        columns={getVariantColumns(variant)}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
+      {isNullOrUndefinedOrEmpty(data) ? (
+        <b style={{ fontSize: "1.5rem" }}>Nenhum item encontrado</b>
+      ) : (
+        <DataGrid
+          rows={tableRows}
+          columns={[
+            ...variantColumns,
+            {
+              field: "actions",
+              headerName: "Ações",
+              sortable: false,
+              width: 140,
+              renderCell: (params: GridCellParams) => (
+                <ActionButtons
+                  onDelete={() => onDeleteCell(params.row)}
+                  onEdit={() => onEditCell(params.row)}
+                />
+              ),
             },
-          },
-        }}
-        pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
-        loading={isLoading}
-      />
+          ]}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
+          pageSizeOptions={[5]}
+          disableRowSelectionOnClick
+          loading={isLoading}
+        />
+      )}
     </S.Container>
   );
 };

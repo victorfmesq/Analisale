@@ -41,4 +41,4 @@ export type TableColumnTypes = {
 };
 
 export type VariantTable = "charges" | "products" | "sales";
-export type DataTable = Product.Entity[] | Sale.Entity[] | Charge.Entity[];
+export type DataTable = Sale.Entity[] | Sale.Entity[] | Charge.Entity[];

@@ -1,13 +1,15 @@
 import { FC } from "react";
 import * as S from "./styles";
+import isNullOrUndefinedOrEmpty from "../../../utils/isNullOrUndefinedOrEmpty";
 
 interface IconButtonProps {
-  text: string;
+  isCompressed: boolean;
+  onClick: () => void;
+  text?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  onClick: () => void;
-  isCompressed: boolean;
   isFulfilled?: boolean;
+  color?: string;
 }
 
 const IconButton: FC<IconButtonProps> = ({
@@ -17,9 +19,11 @@ const IconButton: FC<IconButtonProps> = ({
   rightIcon,
   isCompressed,
   isFulfilled,
+  color,
 }) => {
   return (
     <S.Button
+      color={color}
       onClick={onClick}
       isFulfilled={isFulfilled}
       isCompressed={isCompressed}
@@ -27,7 +31,11 @@ const IconButton: FC<IconButtonProps> = ({
       {leftIcon && (
         <S.LeftIcon isCompressed={isCompressed}>{leftIcon}</S.LeftIcon>
       )}
-      <S.Text isCompressed={isCompressed}>{text}</S.Text>
+
+      {!isNullOrUndefinedOrEmpty(text) && (
+        <S.Text isCompressed={isCompressed}>{text}</S.Text>
+      )}
+
       {rightIcon && (
         <S.RightIcon isCompressed={isCompressed}>{rightIcon}</S.RightIcon>
       )}
@@ -40,6 +48,8 @@ IconButton.defaultProps = {
   rightIcon: undefined,
   isFulfilled: false,
   isCompressed: false,
+  text: undefined,
+  color: undefined,
 };
 
 export default IconButton;

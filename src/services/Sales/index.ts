@@ -2,17 +2,17 @@ import { AxiosResponse } from "axios";
 import api from "../api";
 import { FAILED_REQUEST_RES, Result } from "../result";
 
-const BASE_URL = "products";
+const BASE_URL = "sales";
 
 // TODO: check response types match with api
 
-export const getAllProducts = async (): Promise<Result<Sale.Entity[]>> => {
+export const getAllSales = async (): Promise<Result<Sale.Entity[]>> => {
   let result: Result<Sale.Entity[]> = FAILED_REQUEST_RES;
 
   await api
     .get<Sale.Entity[]>(`${BASE_URL}`)
     .then((response: AxiosResponse<Sale.Entity[]>) => {
-      console.log("getAllProducts: ", response);
+      console.log("getAllSales: ", response);
 
       result = {
         isSuccess: true,
@@ -24,7 +24,7 @@ export const getAllProducts = async (): Promise<Result<Sale.Entity[]>> => {
     .catch((err) => {
       result = {
         ...FAILED_REQUEST_RES,
-        message: "Falha no getAllProducts",
+        message: "Falha no getAllSales",
       };
 
       console.log(err);
@@ -33,15 +33,13 @@ export const getAllProducts = async (): Promise<Result<Sale.Entity[]>> => {
   return result;
 };
 
-export const getProductById = async (
-  id: string,
-): Promise<Result<Sale.Entity>> => {
+export const getSaleById = async (id: string): Promise<Result<Sale.Entity>> => {
   let result: Result<Sale.Entity> = FAILED_REQUEST_RES;
 
   await api
     .get<Sale.Entity>(`${BASE_URL}/${id}`)
     .then((response: AxiosResponse<Sale.Entity>) => {
-      console.log("getAllProducts: ", response);
+      console.log("getAllSales: ", response);
 
       result = {
         isSuccess: true,
@@ -54,14 +52,14 @@ export const getProductById = async (
 
       result = {
         ...FAILED_REQUEST_RES,
-        message: "Falha no getProjectById",
+        message: "Falha no getSaleById",
       };
     });
 
   return result;
 };
 
-export const createProduct = async (
+export const createSale = async (
   payload: Sale.Payload,
 ): Promise<Result<Sale.Entity>> => {
   let result: Result<Sale.Entity> = FAILED_REQUEST_RES;
@@ -69,7 +67,7 @@ export const createProduct = async (
   await api
     .post<Sale.Entity>(`${BASE_URL}`, payload)
     .then((response: AxiosResponse<Sale.Entity>) => {
-      console.log("createProducts: ", response);
+      console.log("createSale: ", response);
 
       result = {
         isSuccess: true,
@@ -80,7 +78,7 @@ export const createProduct = async (
     .catch((err) => {
       result = {
         ...FAILED_REQUEST_RES,
-        message: "Falha no createProduct",
+        message: "Falha no createSale",
       };
 
       console.log(err);
@@ -89,7 +87,7 @@ export const createProduct = async (
   return result;
 };
 
-export const updateProduct = async (
+export const updateSales = async (
   id: string,
   payload: Sale.Payload,
 ): Promise<Result<Sale.Entity>> => {
@@ -98,7 +96,7 @@ export const updateProduct = async (
   await api
     .put<Sale.Entity>(`${BASE_URL}/${id}`, payload)
     .then((response: AxiosResponse<Sale.Entity>) => {
-      console.log(`UpdateProduct/${id}: `, response);
+      console.log(`updateSale/${id}: `, response);
 
       result = {
         isSuccess: true,
@@ -109,7 +107,7 @@ export const updateProduct = async (
     .catch((err) => {
       result = {
         ...FAILED_REQUEST_RES,
-        message: "Falha no updateProduct",
+        message: "Falha no updateSale",
       };
 
       console.log(err);
@@ -118,15 +116,13 @@ export const updateProduct = async (
   return result;
 };
 
-export const deleteProduct = async (
-  id: string,
-): Promise<Result<Sale.Entity>> => {
+export const deleteSale = async (id: string): Promise<Result<Sale.Entity>> => {
   let result: Result<Sale.Entity> = FAILED_REQUEST_RES;
 
   await api
     .delete<Sale.Entity>(`${BASE_URL}/${id}`)
     .then((response: AxiosResponse<Sale.Entity>) => {
-      console.log(`UpdateProduct/${id}: `, response);
+      console.log(`deleteSale/${id}: `, response);
 
       result = {
         isSuccess: true,
@@ -137,7 +133,7 @@ export const deleteProduct = async (
     .catch((err) => {
       result = {
         ...FAILED_REQUEST_RES,
-        message: "Falha no deleteProduct",
+        message: "Falha no deleteSale",
       };
 
       console.log(err);

@@ -1,19 +1,33 @@
 import { ChangeEvent, FC, useState, useCallback } from "react";
 import * as S from "./styles";
 import {
+  FORM_FIELD_TYPES,
   FormComponentProps,
   FormData,
   FormField,
   FormFieldType,
   FormFieldValueType,
 } from "./types";
-
-// TODO: usar Id como key do
+import isNullOrUndefinedOrEmpty from "../../../utils/isNullOrUndefinedOrEmpty";
 
 // TODO: passar rules nos fields para validar os inputs
+const MASKED_NUMBER = /\D/g;
+
+const convertFieldsToFormData = (fields: FormField[]): FormData => {
+  const formData: FormData = {};
+
+  fields.forEach((field) => {
+    if (!isNullOrUndefinedOrEmpty(field.value))
+      formData[field.title] = field.value;
+  });
+
+  return formData;
+};
 
 const Form: FC<FormComponentProps> = ({ fields, onSubmit, buttonLabel }) => {
-  const [formData, setFormData] = useState<FormData>({});
+  const [formData, setFormData] = useState<FormData>(
+    convertFieldsToFormData(fields),
+  );
 
   const handleInputChange = (
     fieldName: string,
@@ -21,16 +35,30 @@ const Form: FC<FormComponentProps> = ({ fields, onSubmit, buttonLabel }) => {
   ) => {
     let fieldValue: FormFieldValueType = event.target.value;
 
+    console.log("FieldValue: ", fieldValue);
+
     const currentField = fields.find((field) => field.title === fieldName);
 
     if (currentField) {
       const fieldType = currentField?.type;
 
-      if (fieldType !== "select" && fieldType !== "text")
-        fieldValue =
-          fieldType === "number"
-            ? parseFloat(fieldValue)
-            : new Date(fieldValue);
+      console.log(currentField);
+
+      if (fieldType) {
+        switch (fieldType) {
+          case FORM_FIELD_TYPES.date:
+            fieldValue = new Date(fieldValue);
+            break;
+          case FORM_FIELD_TYPES.number:
+            fieldValue = parseFloat(fieldValue);
+            break;
+          case FORM_FIELD_TYPES.maskedNumber:
+            fieldValue = fieldValue.replace(MASKED_NUMBER, "");
+            break;
+          default:
+            break;
+        }
+      }
     }
 
     setFormData((current) => {
@@ -45,9 +73,9 @@ const Form: FC<FormComponentProps> = ({ fields, onSubmit, buttonLabel }) => {
       const fieldValue = formData[title] || value;
 
       const getFieldValue = (type: FormFieldType) => {
-        return type === "date"
+        return type === FORM_FIELD_TYPES.date
           ? (formData[title] as Date)?.toISOString().split("T")[0]
-          : type === "number"
+          : type === FORM_FIELD_TYPES.number
           ? (fieldValue as number)
           : (fieldValue as string);
       };
@@ -56,7 +84,7 @@ const Form: FC<FormComponentProps> = ({ fields, onSubmit, buttonLabel }) => {
         <S.FormField key={index}>
           <S.FormLabel>{title}</S.FormLabel>
 
-          {type === "select" ? (
+          {type === FORM_FIELD_TYPES.select ? (
             <S.FormSelect
               value={getFieldValue(type)}
               onChange={(e) => handleInputChange(title, e)}
@@ -70,7 +98,11 @@ const Form: FC<FormComponentProps> = ({ fields, onSubmit, buttonLabel }) => {
             </S.FormSelect>
           ) : (
             <S.FormInput
-              type={type}
+              type={
+                type === FORM_FIELD_TYPES.maskedNumber
+                  ? FORM_FIELD_TYPES.text
+                  : type
+              }
               value={getFieldValue(type)}
               onChange={(e) => handleInputChange(title, e)}
             />

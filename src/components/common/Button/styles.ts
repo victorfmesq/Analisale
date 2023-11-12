@@ -3,13 +3,14 @@ import styled from "styled-components";
 export const Button = styled.button<{
   isFulfilled?: boolean;
   isCompressed?: boolean;
+  background?: boolean;
 }>`
   display: flex;
   width: ${({ isFulfilled }) => (isFulfilled ? "100%" : "auto")};
   justify-content: ${({ isCompressed }) =>
     isCompressed ? "center" : "initial"};
   align-items: center;
-  background-color: #abc;
+  background-color: ${({ color }) => (color ? `${color}` : "#abc")};
   color: #000;
   padding: 8px 12px;
   border: 1px solid #abb;

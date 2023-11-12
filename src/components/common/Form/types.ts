@@ -21,4 +21,7 @@ export const FORM_FIELD_TYPES = {
   select: "select",
   number: "number",
   date: "date",
+  password: "password",
+  email: "email",
+  maskedNumber: "maskedNumber",
 } as const;
