@@ -2,11 +2,18 @@ import { Edit, Delete } from "styled-icons/material";
 import IconButton from "../../common/Button";
 
 interface ActionButtonsProps {
+  enableEdit: boolean;
+  enableDelete: boolean;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({ onEdit, onDelete }) => {
+const ActionButtons: React.FC<ActionButtonsProps> = ({
+  onEdit,
+  onDelete,
+  enableDelete,
+  enableEdit,
+}) => {
   return (
     <div
       style={{
@@ -16,19 +23,23 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onEdit, onDelete }) => {
         gap: "5px",
       }}
     >
-      <IconButton
-        isCompressed
-        leftIcon={<Edit size={15} />}
-        color={"lightgray"}
-        onClick={onEdit}
-      ></IconButton>
+      {enableEdit && (
+        <IconButton
+          isCompressed
+          leftIcon={<Edit size={15} />}
+          color={"lightgray"}
+          onClick={onEdit}
+        />
+      )}
 
-      <IconButton
-        isCompressed
-        color={"lightgray"}
-        leftIcon={<Delete size={15} color="DarkRed" />}
-        onClick={onDelete}
-      ></IconButton>
+      {enableDelete && (
+        <IconButton
+          isCompressed
+          color={"lightgray"}
+          leftIcon={<Delete size={15} color="DarkRed" />}
+          onClick={onDelete}
+        />
+      )}
     </div>
   );
 };

@@ -3,20 +3,22 @@ import {
   GridCellParams,
   GridColDef,
   GridRowParams,
-  GridValueGetterParams,
 } from "@mui/x-data-grid";
 
 import * as S from "./styles";
 import React, { FC, useCallback, useState } from "react";
 import { chargeRows, productRows, saleRows } from "./mocks";
 import {
+  ChargeFields,
   DataTable,
   ProductFields,
+  SaleFields,
   TableColumnTypes,
   VariantTable,
 } from "./types";
 import isNullOrUndefinedOrEmpty from "../../utils/isNullOrUndefinedOrEmpty";
 import ActionButtons from "./ActionButtons";
+import CellList from "./CellList";
 
 const productColumns: GridColDef[] = [
   { field: "id", headerName: "Código", width: 90 },
@@ -27,20 +29,14 @@ const productColumns: GridColDef[] = [
     width: 150,
   },
   {
-    field: "type",
-    headerName: "Tipo",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "salePrice",
+    field: "saleValue",
     headerName: "Preço de Venda",
     type: "number",
     sortable: true,
     width: 150,
   },
   {
-    field: "purchasePrice",
+    field: "purchaseValue",
     headerName: "Preço de Compra",
     type: "number",
     width: 150,
@@ -51,12 +47,7 @@ const productColumns: GridColDef[] = [
     headerName: "Quantidade Disponível",
     type: "number",
     sortable: true,
-    width: 150,
-  },
-  {
-    field: "description",
-    headerName: "Descrição",
-    width: 300,
+    width: 200,
   },
 ];
 
@@ -67,15 +58,9 @@ const saleColumns: GridColDef[] = [
     headerName: "Produtos",
     width: 250,
     renderCell: (params) => {
-      const productsArray = params.row.products; // Assuma que "products" é um array na sua fonte de dados
-      // Renderize os valores do array da maneira que você deseja
-      // const productNames = productsArray
-      //   .map((product) => product.name)
-      //   .join(", ");
-      // return <div>{productNames}</div>;
+      const productsArray = params.row.products;
 
-      // Posso agrupar Produto por quantidade e mostrar lado à lado
-      return <div>Div Mocada! - Products</div>;
+      return <CellList items={productsArray} />;
     },
   },
   {
@@ -92,27 +77,30 @@ const saleColumns: GridColDef[] = [
   {
     field: "charges",
     headerName: "Encargos",
-    width: 90,
+    width: 250,
     renderCell: (params) => {
-      const productsArray = params.row.charges; // Assuma que "charges" é um array na sua fonte de dados
-      // Renderize os valores do array da maneira que você deseja
-      // const chargeNames = chargesArray
-      //   .map((product) => product.name)
-      //   .join(", ");
-      // return <div>{productNames}</div>;
-
-      // Posso agrupar Produto por quantidade e mostrar lado à lado
-      return <div>Div Mocada! - Charges</div>;
+      const chargesArray = params.row.charges;
+      return <CellList items={chargesArray} />;
     },
   },
   {
     field: "amount",
     headerName: "Quantidade de Produtos",
     description: "This column has a value getter and is not sortable.", // tooltip quando hover no header
+    align: "center",
     sortable: true,
-    width: 90,
-    // valueGetter: (params: GridValueGetterParams) =>                 usar prop p buscar em products a soma de todas as unidades
-    //   `${params.row.products || ""} ${params.row.products || ""}`,
+    width: 220,
+    renderCell: ({ row }) => {
+      const { products } = row;
+      return (
+        <div>
+          {(products as Array<any>).reduce(
+            (prev, curr) => prev + (curr.amount || 0),
+            0,
+          )}
+        </div>
+      );
+    },
   },
 ];
 
@@ -134,11 +122,6 @@ const chargeColumns: GridColDef[] = [
     headerName: "Tipo",
     width: 100,
   },
-  {
-    field: "description",
-    headerName: "Descrição",
-    width: 300,
-  },
 ];
 
 const TABLE_COLUMN_TYPES: TableColumnTypes = {
@@ -155,28 +138,43 @@ const getVariantColumns = (variant: VariantTable) => {
     : TABLE_COLUMN_TYPES.sales;
 };
 
-const getVariantRows = (variant: VariantTable) => {
-  if (variant === "charges") return chargeRows;
-
-  return variant === "products" ? productRows : saleRows;
-};
-
 // TODO: receber description do servidor
 const getTableRows = (variant: VariantTable, data: DataTable) => {
   if (variant === "products")
-    return (data as Sale.Entity[]).map((product) => {
+    return (data as Product.Entity[]).map((product) => {
+      const { amount, id, name, purchaseValue, saleValue } = product;
+
       return {
-        amount: product.amount,
-        description: "descrição (MOCK)",
-        name: product.name,
-        id: product.id,
-        purchasePrice: product.salePurchase,
-        salePrice: product.price,
-        type: product.type,
+        amount,
+        name,
+        id,
+        purchaseValue,
+        saleValue,
       };
     }) as unknown as ProductFields[];
+  else if (variant === "charges")
+    return (data as Charge.Entity[]).map((charge) => {
+      const { id, name, type, value } = charge;
+      return {
+        id,
+        name,
+        type,
+        value,
+      };
+    });
 
-  return variant === "charges" ? chargeRows : saleRows;
+  return data
+    ? (data as Sale.Entity[]).map((charge) => {
+        const { id, charges, products, totalPrice, updatedAt } = charge;
+        return {
+          id,
+          charges,
+          products,
+          value: totalPrice,
+          date: new Date(updatedAt),
+        };
+      })
+    : [];
 };
 
 interface TableProps {
@@ -213,6 +211,8 @@ const Table: FC<TableProps> = ({
               width: 140,
               renderCell: (params: GridCellParams) => (
                 <ActionButtons
+                  enableDelete
+                  enableEdit={variant !== "sales"}
                   onDelete={() => onDeleteCell(params.row)}
                   onEdit={() => onEditCell(params.row)}
                 />

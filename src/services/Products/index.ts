@@ -6,12 +6,12 @@ const BASE_URL = "products";
 
 // TODO: check response types match with api
 
-export const getAllProducts = async (): Promise<Result<Sale.Entity[]>> => {
-  let result: Result<Sale.Entity[]> = FAILED_REQUEST_RES;
+export const getAllProducts = async (): Promise<Result<Product.Entity[]>> => {
+  let result: Result<Product.Entity[]> = FAILED_REQUEST_RES;
 
   await api
-    .get<Sale.Entity[]>(`${BASE_URL}`)
-    .then((response: AxiosResponse<Sale.Entity[]>) => {
+    .get<Product.Entity[]>(`${BASE_URL}`)
+    .then((response: AxiosResponse<Product.Entity[]>) => {
       console.log("getAllProducts: ", response);
 
       result = {
@@ -35,12 +35,12 @@ export const getAllProducts = async (): Promise<Result<Sale.Entity[]>> => {
 
 export const getProductById = async (
   id: string,
-): Promise<Result<Sale.Entity>> => {
-  let result: Result<Sale.Entity> = FAILED_REQUEST_RES;
+): Promise<Result<Product.Entity>> => {
+  let result: Result<Product.Entity> = FAILED_REQUEST_RES;
 
   await api
-    .get<Sale.Entity>(`${BASE_URL}/${id}`)
-    .then((response: AxiosResponse<Sale.Entity>) => {
+    .get<Product.Entity>(`${BASE_URL}/${id}`)
+    .then((response: AxiosResponse<Product.Entity>) => {
       console.log("getAllProducts: ", response);
 
       result = {
@@ -62,13 +62,13 @@ export const getProductById = async (
 };
 
 export const createProduct = async (
-  payload: Sale.Payload,
-): Promise<Result<Sale.Entity>> => {
-  let result: Result<Sale.Entity> = FAILED_REQUEST_RES;
+  payload: Product.Payload,
+): Promise<Result<Product.Entity>> => {
+  let result: Result<Product.Entity> = FAILED_REQUEST_RES;
 
   await api
-    .post<Sale.Entity>(`${BASE_URL}`, payload)
-    .then((response: AxiosResponse<Sale.Entity>) => {
+    .post<Product.Entity>(`${BASE_URL}`, payload)
+    .then((response: AxiosResponse<Product.Entity>) => {
       console.log("createProducts: ", response);
 
       result = {
@@ -91,13 +91,13 @@ export const createProduct = async (
 
 export const updateProduct = async (
   id: string,
-  payload: Sale.Payload,
-): Promise<Result<Sale.Entity>> => {
-  let result: Result<Sale.Entity> = FAILED_REQUEST_RES;
+  payload: Product.Payload,
+): Promise<Result<Product.Entity>> => {
+  let result: Result<Product.Entity> = FAILED_REQUEST_RES;
 
   await api
-    .put<Sale.Entity>(`${BASE_URL}/${id}`, payload)
-    .then((response: AxiosResponse<Sale.Entity>) => {
+    .put<Product.Entity>(`${BASE_URL}/${id}`, payload)
+    .then((response: AxiosResponse<Product.Entity>) => {
       console.log(`UpdateProduct/${id}: `, response);
 
       result = {
@@ -120,12 +120,12 @@ export const updateProduct = async (
 
 export const deleteProduct = async (
   id: string,
-): Promise<Result<Sale.Entity>> => {
-  let result: Result<Sale.Entity> = FAILED_REQUEST_RES;
+): Promise<Result<Product.Entity>> => {
+  let result: Result<Product.Entity> = FAILED_REQUEST_RES;
 
   await api
-    .delete<Sale.Entity>(`${BASE_URL}/${id}`)
-    .then((response: AxiosResponse<Sale.Entity>) => {
+    .delete<Product.Entity>(`${BASE_URL}/${id}`)
+    .then((response: AxiosResponse<Product.Entity>) => {
       console.log(`UpdateProduct/${id}: `, response);
 
       result = {

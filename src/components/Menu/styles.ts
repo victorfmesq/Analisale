@@ -1,3 +1,4 @@
+import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -15,7 +16,7 @@ export const Content = styled.div<{ paddingLeft: number }>`
 export const HeaderMobileContainer = styled.div`
   position: fixed;
   rotate: 180deg;
-  top: 0;
+  top: ${isMobile ? "0" : "10%"};
   left: 0;
   opacity: 0.8;
   height: 65px;
