@@ -6,7 +6,7 @@ interface AxiosConfig {
   headers: AxiosHeader;
 }
 
-const BASE_URL: string = "http://localhost:3000/";
+const BASE_URL: string = "http://localhost:3002/";
 const TIMEOUT: number = 30000;
 const HEADERS: AxiosHeader = {
   Autorization: `Bearer ${localStorage.getItem("@auth-token")}`,

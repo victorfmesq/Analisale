@@ -3,7 +3,6 @@ import { GridColDef } from "@mui/x-data-grid";
 export type ProductFields = {
   id: string;
   name: string;
-  type: string;
   salePrice: number;
   purchasePrice: number;
   amount: number;
@@ -29,7 +28,7 @@ export type SaleFields = {
 export type ChargeFields = {
   id: string;
   name: string;
-  value: number;
+  value: Charge.ChargeTypes;
   type: string;
   description: string;
 };
@@ -41,4 +40,4 @@ export type TableColumnTypes = {
 };
 
 export type VariantTable = "charges" | "products" | "sales";
-export type DataTable = Sale.Entity[] | Sale.Entity[] | Charge.Entity[];
+export type DataTable = Product.Entity[] | Sale.Entity[] | Charge.Entity[];

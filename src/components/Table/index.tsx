@@ -10,6 +10,7 @@ import * as S from "./styles";
 import React, { FC, useCallback, useState } from "react";
 import { chargeRows, productRows, saleRows } from "./mocks";
 import {
+  ChargeFields,
   DataTable,
   ProductFields,
   TableColumnTypes,
@@ -27,20 +28,14 @@ const productColumns: GridColDef[] = [
     width: 150,
   },
   {
-    field: "type",
-    headerName: "Tipo",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "salePrice",
+    field: "saleValue",
     headerName: "Preço de Venda",
     type: "number",
     sortable: true,
     width: 150,
   },
   {
-    field: "purchasePrice",
+    field: "purchaseValue",
     headerName: "Preço de Compra",
     type: "number",
     width: 150,
@@ -164,17 +159,30 @@ const getVariantRows = (variant: VariantTable) => {
 // TODO: receber description do servidor
 const getTableRows = (variant: VariantTable, data: DataTable) => {
   if (variant === "products")
-    return (data as Sale.Entity[]).map((product) => {
+    return (data as Product.Entity[]).map((product) => {
+      const { amount, id, name, purchaseValue, saleValue } = product;
+
       return {
-        amount: product.amount,
+        amount,
+        name,
+        id,
+        purchaseValue,
+        saleValue,
         description: "descrição (MOCK)",
-        name: product.name,
-        id: product.id,
-        purchasePrice: product.salePurchase,
-        salePrice: product.price,
-        type: product.type,
       };
     }) as unknown as ProductFields[];
+
+  const chargeRows: ChargeFields[] = (data as Charge.Entity[]).map((charge) => {
+    const { id, name, type, value } = charge;
+
+    return {
+      id,
+      name,
+      type,
+      value,
+      description: "descrição (MOCK)",
+    };
+  });
 
   return variant === "charges" ? chargeRows : saleRows;
 };

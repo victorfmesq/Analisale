@@ -1,7 +1,20 @@
+export type SaleProduct = {
+  id: string;
+  amount: number;
+};
+
 declare namespace Sale {
   export interface Entity extends BaseEntity.default {
-    productName: string;
-    quantity: number;
-    totalPrice: number;
+    name: string;
+    products: SaleProduct[];
+    charges: string[];
+    updatedAt: Date;
+    createdAt: Date;
+  }
+
+  export interface Payload {
+    name: string;
+    products: SaleProduct[];
+    charges: string[];
   }
 }
