@@ -36,6 +36,11 @@ Antes de começar, certifique-se de ter instalado os seguintes requisitos:
 
    ```bash
    cd analisale-backend; npm i
+   ou
+   cd analisale-backend && npm i
+   ou
+   cd analisale-backend
+   npm i
    ```
 
    **Configure as variáveis de ambiente:**
@@ -60,6 +65,11 @@ Antes de começar, certifique-se de ter instalado os seguintes requisitos:
 
    ```bash
    cd Analisale; npm i
+   ou
+   cd Analisale && npm i
+   ou
+   cd Analisale
+   npm i
    ```
 
    ## Funcionalidades
@@ -86,7 +96,12 @@ Antes de começar, certifique-se de ter instalado os seguintes requisitos:
 ### Back
 
 ```bash
-  cd local_repository_dir/analisale-backend; npm run dev
+  cd local_repository_dir/analisale-backend; npm run dev (Win)
+  ou
+  cd local_repository_dir/analisale-backend && npm run dev (Liux)
+  ou
+  cd local_repository_dir/analisale-backend
+  npm run dev
 ```
 
 1. Abra o navegador no endereço `"http://localhost:3000/api-docs"`
@@ -96,7 +111,12 @@ Antes de começar, certifique-se de ter instalado os seguintes requisitos:
 ### Front
 
 ```bash
-  cd local_repository_dir/Analisale; npm run dev
+  cd local_repository_dir/Analisale; npm run dev (Win)
+  ou
+  cd local_repository_dir/Analisale && npm run dev (Linux)
+  ou
+  cd local_repository_dir/Analisale
+  npm run dev
 ```
 
 1. Abra o navegador no endereço `http://localhost:5173/`
