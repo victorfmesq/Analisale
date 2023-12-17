@@ -24,10 +24,10 @@ import isNullOrUndefinedOrEmpty from "../../utils/isNullOrUndefinedOrEmpty";
 import { ToastContainer, toast, Zoom } from "react-toastify";
 import renderToast from "../../utils/renderToast";
 import { GridRowParams } from "@mui/x-data-grid";
+import useTableData from "../../context/TableDataContext/useTableData";
 
 const FORM_TITLES = {
   name: "Nome",
-  type: "Tipo",
   amount: "Estoque",
   price: "Preço de Venda",
   purchase: "Valor de Compra",
@@ -37,11 +37,6 @@ const PRODUCT_FORM_FIELDS: FormField[] = [
   {
     title: FORM_TITLES.name,
     type: FORM_FIELD_TYPES.text,
-    value: "",
-  },
-  {
-    title: FORM_TITLES.type,
-    type: FORM_FIELD_TYPES.maskedNumber,
     value: "",
   },
   {
@@ -64,16 +59,19 @@ const PRODUCT_FORM_FIELDS: FormField[] = [
 const Products = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [fetchProducts, setFetchProducts] = useState<boolean>(true);
-  const [products, setProducts] = useState<Sale.Entity[]>([]);
+  const [products, setProducts] = useState<Product.Entity[]>([]);
   const [searchInput, setSearchInput] = useState<string>("");
 
   const { handleModalContent } = useModal();
+  const { updateProducts } = useTableData();
 
   useEffect(() => {
     (async () => {
       if (fetchProducts) {
         setIsLoading(true);
         const result = await getAllProducts();
+
+        updateProducts(result.value);
 
         if (result.isSuccess) setProducts(result.value);
 
@@ -102,12 +100,11 @@ const Products = () => {
       return;
     }
 
-    let formObj: Sale.Payload = {
+    let formObj: Product.Payload = {
       name: formData[FORM_TITLES.name].toString(),
       amount: Number(formData[FORM_TITLES.amount]),
-      price: Number(formData[FORM_TITLES.price]),
-      salePurchase: Number(formData[FORM_TITLES.purchase]),
-      type: Number(formData[FORM_TITLES.type]),
+      saleValue: Number(formData[FORM_TITLES.price]),
+      purchaseValue: Number(formData[FORM_TITLES.purchase]),
     };
 
     if (entityId) await updateProduct(entityId, formObj);
@@ -145,19 +142,19 @@ const Products = () => {
 
   const openModal = (
     isEdit: boolean,
-    productToEdit?: GridRowParams<Sale.Entity>,
+    productToEdit?: GridRowParams<Product.Entity>,
   ) => {
     let fields: FormField[] = PRODUCT_FORM_FIELDS;
 
     console.log(productToEdit);
 
     if (isEdit && productToEdit) {
+      console.log(productToEdit);
       const fieldMapValue = {
         [FORM_TITLES.name]: productToEdit.name,
         [FORM_TITLES.amount]: productToEdit.amount,
-        [FORM_TITLES.price]: productToEdit.salePrice,
-        [FORM_TITLES.purchase]: productToEdit.purchasePrice,
-        [FORM_TITLES.type]: productToEdit.type,
+        [FORM_TITLES.price]: productToEdit.saleValue,
+        [FORM_TITLES.purchase]: productToEdit.purchaseValue,
       };
 
       fields = fields.map((field) => {
@@ -205,24 +202,7 @@ const Products = () => {
           onEditCell={(props) => openModal(true, props)}
         />
       </TabPageStyle.Body>
-      <ToastContainer
-        style={{
-          position: "fixed",
-          bottom: 50,
-          right: "50%",
-        }}
-        position="bottom-center"
-        autoClose={8000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        transition={Zoom}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+      <div></div>
     </>
   );
 };

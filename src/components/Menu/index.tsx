@@ -14,9 +14,7 @@ const MIN_DRAWER_WIDTH = isMobile ? 0 : 80;
 const MAX_DRAWER_WIDTH = 240;
 
 const Menu: FC<MenuProps> = ({ children }) => {
-  const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(
-    isMobile ? false : true,
-  );
+  const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
 
   const contentPadding = useMemo(
     () => (isOpenDrawer ? MAX_DRAWER_WIDTH : MIN_DRAWER_WIDTH),
@@ -38,15 +36,23 @@ const Menu: FC<MenuProps> = ({ children }) => {
         </S.HeaderMobileContainer>
       )}
 
-      <div
-        onMouseEnter={() => setIsOpenDrawer(true)}
-        onMouseLeave={() => setIsOpenDrawer(false)}
-      >
+      <div onMouseLeave={() => setIsOpenDrawer(false)}>
         <Drawer
           isOpen={isOpenDrawer}
           closedWidth={MIN_DRAWER_WIDTH}
           openWidth={MAX_DRAWER_WIDTH}
         />
+
+        <S.HeaderMobileContainer>
+          <IconButton
+            isCompressed
+            text=""
+            rightIcon={
+              isOpenDrawer ? <MenuOpen size={20} /> : <MenuIcon size={20} />
+            }
+            onClick={() => setIsOpenDrawer((current) => !current)}
+          />
+        </S.HeaderMobileContainer>
       </div>
 
       <S.Content paddingLeft={!isMobile ? contentPadding : 0}>

@@ -28,4 +28,6 @@ export const Header = styled(BaseDiv)`
 
 export const Body = styled(BaseDiv)`
   flex: 1;
+  gap: 10px;
+  overflow-y: auto;
 `;

@@ -4,6 +4,6 @@ export interface SessionProviderProps {
 
 export interface SessionContextProps {
   isAuthenticated: boolean;
-  login: () => void;
+  login: (login: string, passord: string) => Promise<void>;
   logout: () => void;
 }
